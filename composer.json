@@ -1,0 +1,23 @@
+{
+    "name": "shiren/yao",
+    "description": "易学六爻",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Shiren\\Yao\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "上海实印科技",
+            "email": "developer@10in.com"
+        },
+        {
+            "name": "qingliu",
+            "email": "soonio@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
