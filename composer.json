@@ -19,5 +19,7 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {}
+    "require": {
+        "shiren/tam": "dev-master"
+    }
 }

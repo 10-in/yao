@@ -34,6 +34,36 @@ class Eye
      */
     public function look()
     {
-
+        // 识卦
+        // 装卦
     }
+
+    public function recognizeGua() {
+        $f = $b = 0b000000;
+
+        $dynamic = false;
+        /** @var Yao $y */
+        foreach ($this->times as $y) {
+            if ($y->data > 1) {
+                $dynamic = true;
+            }
+            switch ($y->data) {
+                case 1:
+                    $f = $f | 1<<$y->no;
+                    $b = $b | 1<<$y->no;
+                    break;
+                case 2:
+                    $b = $b | 1<<$y->no;
+                    break;
+                case 3:
+                    $f = $f | 1<<$y->no;
+                }
+        }
+//        $front = yao.Cs[f]
+//        if dynamic {
+//            back = yao.Cs[b]
+//        }
+//        return
+    }
+
 }
