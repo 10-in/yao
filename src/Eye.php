@@ -22,6 +22,21 @@ class Eye
     public $z = [];
 
     /**
+     * @var int 前卦
+     */
+    public $front;
+
+    /**
+     * @var int|null 后卦
+     */
+    public $back;
+
+    /**
+     * @var int 卦的五行
+     */
+    public $element;
+
+    /**
      * @param array []Yao $times
      */
     public function __construct(array $times)
@@ -32,15 +47,19 @@ class Eye
     /**
      * 看六次爻卦的结果得出盘面基本信息
      */
-    public function look()
+    public function look(): Eye
     {
-        // 识卦
-        // 装卦
+        $this->recognize();
+        $this->load();
+        return $this;
     }
 
-    public function recognizeGua() {
+    /**
+     * 识卦
+     */
+    public function recognize()
+    {
         $f = $b = 0b000000;
-
         $dynamic = false;
         /** @var Yao $y */
         foreach ($this->times as $y) {
@@ -59,11 +78,35 @@ class Eye
                     $f = $f | 1<<$y->no;
                 }
         }
-//        $front = yao.Cs[f]
-//        if dynamic {
-//            back = yao.Cs[b]
-//        }
-//        return
+        $dynamic || $b = null;
+        $this->front = $f;
+        $this->back = $b;
     }
 
+    /**
+     * 装卦
+     */
+    public function load()
+    {
+        // 算五行
+
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name()
+        ];
+    }
+
+    /**
+     * 计算出卦的名称，包含前卦和后卦
+     * @return array
+     */
+    protected function name(): array
+    {
+        $names = [Definition::GuaName[$this->front]];
+        is_null($this->back) || $names[] = Definition::GuaName[$this->back];
+        return $names;
+    }
 }

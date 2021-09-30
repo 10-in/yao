@@ -36,4 +36,10 @@ class Yao extends YaoAttr
      * @var YaoAttr|null 变卦信息
      */
     public $change;
+
+    public function __construct(int $no, int $data)
+    {
+        $this->no = $no;
+        $this->data = $data;
+    }
 }
