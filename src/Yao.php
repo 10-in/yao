@@ -41,5 +41,9 @@ class Yao extends YaoAttr
     {
         $this->no = $no;
         $this->data = $data;
+
+        if ($data > 1) { // 动爻需要记录额外的属性
+            $this->change = new YaoAttr();
+        }
     }
 }

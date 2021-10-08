@@ -8,8 +8,8 @@ namespace Shiren\Yao;
 class Divination
 {
     /**
-     *
-     * @param int $i
+     * 宫转为五行
+     * @param int $i 宫的索引转为
      * @return int
      */
     public static function g2e(int $i): int
@@ -22,7 +22,7 @@ class Divination
      * @param int $dayZhi 日支
      * @return int[] 两个旬空地支
      */
-    public function kong(int $dayGan, int $dayZhi): array
+    public static function kong(int $dayGan, int $dayZhi): array
     {
         $s = 9 - $dayGan + $dayZhi;
         return [($s + 1) % 12, ($s + 2) % 12];
@@ -66,9 +66,13 @@ class Divination
         return Definition::GuaGong[$i];
     }
 
+    /**
+     * 卦对应的象
+     * @param int $i
+     * @return int
+     */
     public static function guaXiang(int $i): int
     {
         return Definition::GuaXiang[$i];
     }
-
 }

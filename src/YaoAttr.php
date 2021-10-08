@@ -5,27 +5,27 @@ namespace Shiren\Yao;
 class YaoAttr
 {
     /**
-     * @var string 地支
+     * @var int 地支
      */
     public $z;
 
     /**
-     * @var string 六亲
+     * @var int 六亲
      */
-    public $relatives;
+    public $relation;
 
     /**
-     * @var string 旬空
+     * @var int 旬空(0无，1有)
      */
-    public $empty;
+    public $empty = 0;
 
     /**
-     * @var string 月建/月破
+     * @var int 1-月建/2-月破
      */
-    public $m;
+    public $m = 0;
 
     /**
-     * @var string 暗动
+     * @var int 0无 1-暗动
      */
     public $d;
 }

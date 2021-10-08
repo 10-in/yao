@@ -2,6 +2,8 @@
 
 namespace Shiren\Yao;
 
+use Shiren\TAM\Algorithm;
+
 /**
  * 看六爻的基础数据识别六爻
  */
@@ -13,13 +15,14 @@ class Eye
     public $times = [];
 
     /**
-     * @var array 六爻占卜时对应的干支纪年法时间，依次为年干、月干、日干
+     * @var array 六爻占卜时对应的干支纪年法时间日柱
      */
-    public $g = [];
+    public $dayColumn = [];
+
     /**
-     * @var array 六爻占卜时对应的干支纪年法时间，依次为年支、月支、日支
+     * @var array 六爻占卜时对应的干支纪年法时间月柱
      */
-    public $z = [];
+    public $monthColumn = [];
 
     /**
      * @var int 前卦
@@ -39,9 +42,14 @@ class Eye
     /**
      * @param array []Yao $times
      */
-    public function __construct(array $times)
+    public function __construct(array $times, array $monthColumn, array $dayColumn)
     {
-        $this->times = $times;
+        /** @var Yao $yao */
+        foreach ($times as $yao) {
+            $this->times[$yao->no] = $yao;
+        }
+        $this->monthColumn = $monthColumn;
+        $this->dayColumn = $dayColumn;
     }
 
     /**
@@ -88,14 +96,22 @@ class Eye
      */
     public function load()
     {
-        // 算五行
-
+        $gong = Divination::guaGong($this->front);
+        $this->element = Divination::g2e($gong); // 装五行
+        $this->loadZhi(); // 装地支
+        $this->loadSY(); // 装世爻应爻
+        $this->loadRelation(); // 装卦的六亲
+        $this->loadAnimals(); // 装六兽
+        $this->loadEmpty(); // 装旬空
+        $this->loadJPD();
+        $this->loadDefect($gong);
     }
 
     public function toArray(): array
     {
         return [
-            'name' => $this->name()
+            'name'      => $this->name(),
+            'element'   => $this->element,
         ];
     }
 
@@ -108,5 +124,153 @@ class Eye
         $names = [Definition::GuaName[$this->front]];
         is_null($this->back) || $names[] = Definition::GuaName[$this->back];
         return $names;
+    }
+
+    /**
+     * 装卦的地支
+     */
+    protected function loadZhi()
+    {
+        // 装前卦
+        $out    = $this->front >> 3;
+        $inside = $this->front & 0b000111;
+
+        $i = Definition::GuaZ[$inside][0];
+        $o = Definition::GuaZ[$out][1];
+
+        $gz = array_merge($i, $o);
+
+        /** @var Yao $yao */
+        foreach ($this->times as $yao) {
+            $yao->z = $gz[$yao->no];
+        }
+
+        if ($this->back != null) {
+            // 装后卦
+            $out    = $this->back >> 3;
+            $inside = $this->back & 0b000111;
+
+            $i = Definition::GuaZ[$inside][0];
+            $o = Definition::GuaZ[$out][1];
+
+            $gz = array_merge($i, $o);
+
+            /** @var Yao $yao */
+            foreach ($this->times as $yao) {
+                if ($yao->change != null) {
+                    $yao->change->z = $gz[$yao->no];
+                }
+            }
+        }
+    }
+
+    /**
+     * 装卦的世爻应爻
+     */
+    protected function loadSY()
+    {
+        $x = Divination::guaXiang($this->front);
+        $position = Divination::sy($x);
+        $this->times[$position[0]]->sy = 2;
+        $this->times[$position[1]]->sy = 1;
+    }
+
+    /**
+     * 装卦的六亲
+     */
+    protected function loadRelation()
+    {
+        /** @var Yao $yao */
+        foreach ($this->times as $yao) {
+            $yao->relation = Algorithm::spirit($this->element, Algorithm::z2e($yao->z));
+            if ($yao->change != null) {
+                $yao->change->relation = Algorithm::spirit($this->element, Algorithm::z2e($yao->change->z));
+            }
+        }
+    }
+
+    /**
+     * 装卦的六兽
+     */
+    protected function loadAnimals()
+    {
+        $start = Definition::AnimalStart[$this->dayColumn[0]];
+
+        /** @var Yao $yao */
+        foreach ($this->times as $yao) {
+            $yao->animal = $start % 6;
+            $start++;
+        }
+    }
+
+    /**
+     * 装旬空
+     */
+    protected function loadEmpty()
+    {
+        $kong = Divination::kong($this->dayColumn[0], $this->dayColumn[1]);
+
+        /** @var Yao $yao */
+        foreach ($this->times as $yao) {
+            if (in_array($yao->z, $kong)) {
+                $yao->empty = 1;
+            }
+            if ($yao->change != null) {
+                if (in_array($yao->change->z, $kong)) {
+                    $yao->change->empty = 1;
+                }
+            }
+        }
+    }
+
+    /**
+     * 装建/破/动
+     */
+    protected function loadJPD()
+    {
+        /** @var Yao $yao */
+        foreach ($this->times as $yao) {
+            if ($yao->z == $this->monthColumn[1]) {
+                $yao->m = 1;
+            } else if (abs($yao->z - $this->monthColumn[1]) == 6) {
+                $yao->m = 2;
+            }
+
+            if (abs($yao->z - $this->dayColumn[1]) == 6) {
+                $yao->d = 1;
+            }
+
+            if ($yao->change != null) {
+                if ($yao->change->z == $this->monthColumn[1]) {
+                    $yao->change->m = 1;
+                } else if (abs($yao->change->z - $this->monthColumn[1]) == 6) {
+                    $yao->change->m = 2;
+                }
+                if (abs($yao->change->z - $this->dayColumn[1]) == 6) {
+                    $yao->change->d = 1;
+                }
+            }
+        }
+    }
+
+    /**
+     * 修复缺失
+     * @param int $gong
+     */
+    protected function loadDefect(int $gong)
+    {
+//        $gong * 9;
+        $count = 0;
+        /** @var Yao $yao */
+        foreach ($this->times as $yao) {
+            $count = $count | 1<<$yao->relation;
+        }
+        if ($count != 0b11111) {
+             for ($i = 0; $i < 5; $i++) {
+                 if (($count & (1 << $i) == 0)) {
+
+                 }
+             }
+        }
     }
 }
