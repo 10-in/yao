@@ -254,7 +254,7 @@ class Eye
     }
 
     /**
-     * 修复缺失
+     * 修复缺失的六亲
      * @param int $gong
      */
     protected function loadDefect(int $gong)
