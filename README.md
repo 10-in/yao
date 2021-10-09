@@ -45,82 +45,28 @@
     "element": "木",
     "times": [
       {
-        "no": 0,
-        "type": 1,
-        "sy": "应",
-        "animal": "朱",
-        "peace": "",
-        "change": null,
-        "z": "子",
-        "relation": "父",
-        "empty": "",
-        "m": "破",
-        "d": ""
+        "no": 0, "type": 1, "sy": "应", "animal": "朱", "peace": "", "z": "子", "relation": "父", "empty": "", "m": "破", "d": "",
+        "change": null
       },
       {
-        "no": 1,
-        "type": 2,
-        "sy": "",
-        "animal": "勾",
-        "peace": "",
-        "change": { "z": "卯", "relation": "兄", "empty": "", "m": "", "d": "" },
-        "z": "寅",
-        "relation": "兄",
-        "empty": "",
-        "m": "",
-        "d": ""
+        "no": 1, "type": 2, "sy": "", "animal": "勾", "peace": "", "z": "寅", "relation": "兄", "empty": "", "m": "", "d": "",
+        "change": { "z": "卯", "relation": "兄", "empty": "", "m": "", "d": "" }
       },
       {
-        "no": 2,
-        "type": 0,
-        "sy": "",
-        "animal": "蛇",
-        "peace": "",
-        "change": null,
-        "z": "辰",
-        "relation": "才",
-        "empty": "",
-        "m": "",
-        "d": ""
+        "no": 2, "type": 0, "sy": "", "animal": "蛇", "peace": "", "z": "辰", "relation": "才", "empty": "", "m": "", "d": "",
+        "change": null
       },
       {
-        "no": 3,
-        "type": 0,
-        "sy": "世",
-        "animal": "白",
-        "peace": "",
-        "change": null,
-        "z": "戌",
-        "relation": "才",
-        "empty": "空",
-        "m": "",
-        "d": ""
+        "no": 3, "type": 0, "sy": "世", "animal": "白", "peace": "", "z": "戌", "relation": "才", "empty": "空", "m": "", "d": "",
+        "change": null
       },
       {
-        "no": 4,
-        "type": 0,
-        "sy": "",
-        "animal": "玄",
-        "peace": "巳子",
-        "change": null,
-        "z": "子",
-        "relation": "父",
-        "empty": "",
-        "m": "破",
-        "d": ""
+        "no": 4, "type": 0, "sy": "", "animal": "玄", "peace": "巳子", "z": "子", "relation": "父", "empty": "", "m": "破", "d": "",
+        "change": null
       },
       {
-        "no": 5,
-        "type": 3,
-        "sy": "",
-        "animal": "青",
-        "peace": "",
-        "change": { "z": "酉", "relation": "官", "empty": "", "m": "", "d": ""},
-        "z": "寅",
-        "relation": "兄",
-        "empty": "",
-        "m": "",
-        "d": ""
+        "no": 5, "type": 3, "sy": "", "animal": "青", "peace": "", "z": "寅", "relation": "兄", "empty": "", "m": "", "d": "",
+        "change": { "z": "酉", "relation": "官", "empty": "", "m": "", "d": ""}
       }
     ],
     "dayCol": [2, 2],
