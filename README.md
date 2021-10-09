@@ -38,6 +38,97 @@
   $eye = \Shiren\Yao\Eye::create([1, 2, 0, 0, 0, 3], [6, 10], [2, 2])->look();
   $data = \Shiren\Yao\Visible::instance($eye)->show(true);
   ```
+  - ->show(true)结果
+  ```json
+  {
+    "name": [ "山雷颐", "地泽临"],
+    "element": "木",
+    "times": [
+      {
+        "no": 0,
+        "type": 1,
+        "sy": "应",
+        "animal": "朱",
+        "peace": "",
+        "change": null,
+        "z": "子",
+        "relation": "父",
+        "empty": "",
+        "m": "破",
+        "d": ""
+      },
+      {
+        "no": 1,
+        "type": 2,
+        "sy": "",
+        "animal": "勾",
+        "peace": "",
+        "change": { "z": "卯", "relation": "兄", "empty": "", "m": "", "d": "" },
+        "z": "寅",
+        "relation": "兄",
+        "empty": "",
+        "m": "",
+        "d": ""
+      },
+      {
+        "no": 2,
+        "type": 0,
+        "sy": "",
+        "animal": "蛇",
+        "peace": "",
+        "change": null,
+        "z": "辰",
+        "relation": "才",
+        "empty": "",
+        "m": "",
+        "d": ""
+      },
+      {
+        "no": 3,
+        "type": 0,
+        "sy": "世",
+        "animal": "白",
+        "peace": "",
+        "change": null,
+        "z": "戌",
+        "relation": "才",
+        "empty": "空",
+        "m": "",
+        "d": ""
+      },
+      {
+        "no": 4,
+        "type": 0,
+        "sy": "",
+        "animal": "玄",
+        "peace": "巳子",
+        "change": null,
+        "z": "子",
+        "relation": "父",
+        "empty": "",
+        "m": "破",
+        "d": ""
+      },
+      {
+        "no": 5,
+        "type": 3,
+        "sy": "",
+        "animal": "青",
+        "peace": "",
+        "change": { "z": "酉", "relation": "官", "empty": "", "m": "", "d": ""},
+        "z": "寅",
+        "relation": "兄",
+        "empty": "",
+        "m": "",
+        "d": ""
+      }
+    ],
+    "dayCol": [2, 2],
+    "monthCol": [6, 6],
+    "front": 33,
+    "back": 3
+  }
+  ```
 
 ## 参考demo
 

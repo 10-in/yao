@@ -20,5 +20,5 @@ $dayColumn = [
 
 $eye = Eye::create($map, $monthColumn, $dayColumn)->look();
 
-$res = Visible::instance($eye)->show();
-print_r($res);
+$res = Visible::instance($eye)->show(true);
+echo json_encode($res, JSON_UNESCAPED_UNICODE);
