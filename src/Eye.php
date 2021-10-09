@@ -17,12 +17,12 @@ class Eye
     /**
      * @var array 六爻占卜时对应的干支纪年法时间日柱
      */
-    public $dayColumn = [];
+    public $dayCol = [];
 
     /**
      * @var array 六爻占卜时对应的干支纪年法时间月柱
      */
-    public $monthColumn = [];
+    public $monthCol = [];
 
     /**
      * @var int 前卦
@@ -40,7 +40,24 @@ class Eye
     public $element;
 
     /**
+     * @param array $types 六次爻卦的结果(0阴爻[- -] 1阳爻[---] 2动阴爻[-x-] 3动阳爻[-0-])
+     * @param array $monthColumn 月柱
+     * @param array $dayColumn 日柱
+     * @return Eye
+     */
+    public static function create(array $types, array $monthColumn, array $dayColumn): Eye
+    {
+        $times = [];
+        for ($i =0; $i<6; $i++) {
+            $times[] = new Yao($i, $types[$i]);
+        }
+        return new static($times, $monthColumn, $dayColumn);
+    }
+
+    /**
      * @param array []Yao $times
+     * @param array $monthColumn
+     * @param array $dayColumn
      */
     public function __construct(array $times, array $monthColumn, array $dayColumn)
     {
@@ -48,8 +65,8 @@ class Eye
         foreach ($times as $yao) {
             $this->times[$yao->no] = $yao;
         }
-        $this->monthColumn = $monthColumn;
-        $this->dayColumn = $dayColumn;
+        $this->monthCol = $monthColumn;
+        $this->dayCol = $dayColumn;
     }
 
     /**
@@ -71,20 +88,20 @@ class Eye
         $dynamic = false;
         /** @var Yao $y */
         foreach ($this->times as $y) {
-            if ($y->data > 1) {
+            if ($y->type > 1) {
                 $dynamic = true;
             }
-            switch ($y->data) {
+            switch ($y->type) {
                 case 1:
-                    $f = $f | 1<<$y->no;
-                    $b = $b | 1<<$y->no;
+                    $f = $f | 1 << $y->no;
+                    $b = $b | 1 << $y->no;
                     break;
                 case 2:
-                    $b = $b | 1<<$y->no;
+                    $b = $b | 1 << $y->no;
                     break;
                 case 3:
-                    $f = $f | 1<<$y->no;
-                }
+                    $f = $f | 1 << $y->no;
+            }
         }
         $dynamic || $b = null;
         $this->front = $f;
@@ -112,6 +129,11 @@ class Eye
         return [
             'name'      => $this->name(),
             'element'   => $this->element,
+            'times'     => array_map(function (Yao $yao) { return $yao->toArray(); }, $this->times),
+            'dayCol'    => $this->dayCol,
+            'monthCol'  => $this->monthCol,
+            'front'     => $this->front,
+            'back'      => $this->back,
         ];
     }
 
@@ -119,7 +141,7 @@ class Eye
      * 计算出卦的名称，包含前卦和后卦
      * @return array
      */
-    protected function name(): array
+    public function name(): array
     {
         $names = [Definition::GuaName[$this->front]];
         is_null($this->back) || $names[] = Definition::GuaName[$this->back];
@@ -132,7 +154,7 @@ class Eye
     protected function loadZhi()
     {
         // 装前卦
-        $out    = $this->front >> 3;
+        $out = $this->front >> 3;
         $inside = $this->front & 0b000111;
 
         $i = Definition::GuaZ[$inside][0];
@@ -147,7 +169,7 @@ class Eye
 
         if ($this->back != null) {
             // 装后卦
-            $out    = $this->back >> 3;
+            $out = $this->back >> 3;
             $inside = $this->back & 0b000111;
 
             $i = Definition::GuaZ[$inside][0];
@@ -171,6 +193,7 @@ class Eye
     {
         $x = Divination::guaXiang($this->front);
         $position = Divination::sy($x);
+
         $this->times[$position[0]]->sy = 2;
         $this->times[$position[1]]->sy = 1;
     }
@@ -194,7 +217,7 @@ class Eye
      */
     protected function loadAnimals()
     {
-        $start = Definition::AnimalStart[$this->dayColumn[0]];
+        $start = Definition::AnimalStart[$this->dayCol[0]];
 
         /** @var Yao $yao */
         foreach ($this->times as $yao) {
@@ -208,7 +231,7 @@ class Eye
      */
     protected function loadEmpty()
     {
-        $kong = Divination::kong($this->dayColumn[0], $this->dayColumn[1]);
+        $kong = Divination::kong($this->dayCol[0], $this->dayCol[1]);
 
         /** @var Yao $yao */
         foreach ($this->times as $yao) {
@@ -230,23 +253,23 @@ class Eye
     {
         /** @var Yao $yao */
         foreach ($this->times as $yao) {
-            if ($yao->z == $this->monthColumn[1]) {
+            if ($yao->z == $this->monthCol[1]) {
                 $yao->m = 1;
-            } else if (abs($yao->z - $this->monthColumn[1]) == 6) {
+            } else if (abs($yao->z - $this->monthCol[1]) == 6) {
                 $yao->m = 2;
             }
 
-            if (abs($yao->z - $this->dayColumn[1]) == 6) {
+            if (abs($yao->z - $this->dayCol[1]) == 6) {
                 $yao->d = 1;
             }
 
             if ($yao->change != null) {
-                if ($yao->change->z == $this->monthColumn[1]) {
+                if ($yao->change->z == $this->monthCol[1]) {
                     $yao->change->m = 1;
-                } else if (abs($yao->change->z - $this->monthColumn[1]) == 6) {
+                } else if (abs($yao->change->z - $this->monthCol[1]) == 6) {
                     $yao->change->m = 2;
                 }
-                if (abs($yao->change->z - $this->dayColumn[1]) == 6) {
+                if (abs($yao->change->z - $this->dayCol[1]) == 6) {
                     $yao->change->d = 1;
                 }
             }
@@ -262,9 +285,9 @@ class Eye
         $exists = 0b00000; // 用二进制表示是否存在对应的六亲，依次为父、兄、子、才、官，默认为不存在
         /** @var Yao $yao */
         foreach ($this->times as $yao) {
-            $exists = $exists | 1<<$yao->relation;
-            if($yao->change != null) {
-                $exists = $exists | 1<<$yao->change->relation;
+            $exists = $exists | 1 << $yao->relation;
+            if ($yao->change != null) {
+                $exists = $exists | 1 << $yao->change->relation;
             }
         }
         if ($exists != 0b11111) {

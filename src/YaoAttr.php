@@ -28,4 +28,15 @@ class YaoAttr
      * @var int 0无 1-暗动
      */
     public $d;
+
+    public function toArray(): array
+    {
+        return [
+            'z'         => $this->z,
+            'relation'  => $this->relation,
+            'empty'     => $this->empty,
+            'm'         => $this->m,
+            'd'         => $this->d,
+        ];
+    }
 }
