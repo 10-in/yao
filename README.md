@@ -34,7 +34,7 @@
   ```php
   // 需要自己转换参数
   $data = \Shiren\Yao\Eye::create([1, 2, 0, 0, 0, 3], [6, 10], [2, 2])->look()->toArray();
-  // 戊戌自己转换参数
+  // 以下无需自己转换参数
   $eye = \Shiren\Yao\Eye::create([1, 2, 0, 0, 0, 3], [6, 10], [2, 2])->look();
   $data = \Shiren\Yao\Visible::instance($eye)->show(true);
   ```
