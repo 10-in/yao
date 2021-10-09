@@ -254,23 +254,33 @@ class Eye
     }
 
     /**
-     * 修复缺失的六亲
+     * 修复缺失的六亲(在内外卦都没有，则为缺失六亲)
      * @param int $gong
      */
     protected function loadDefect(int $gong)
     {
-//        $gong * 9;
-        $count = 0;
+        $exists = 0b00000; // 用二进制表示是否存在对应的六亲，依次为父、兄、子、才、官，默认为不存在
         /** @var Yao $yao */
         foreach ($this->times as $yao) {
-            $count = $count | 1<<$yao->relation;
+            $exists = $exists | 1<<$yao->relation;
+            if($yao->change != null) {
+                $exists = $exists | 1<<$yao->change->relation;
+            }
         }
-        if ($count != 0b11111) {
-             for ($i = 0; $i < 5; $i++) {
-                 if (($count & (1 << $i) == 0)) {
+        if ($exists != 0b11111) {
+            $GuaZhi = array_merge(...Definition::GuaZ[$gong]); // 根据当前卦所在的宫的第一个卦，得到对应的地支
+            $relations = array_map(function ($z) {
+                return [$z, Algorithm::spirit($this->element, Algorithm::z2e($z))]; // [地支，六亲]
+            }, $GuaZhi);
 
-                 }
-             }
+            // TODO 可能产生同一个六亲被伏两次的情况
+            foreach ($relations as $index => $r) {
+                if ((($exists >> $r[1]) & 0b00001) == 0) { // 判断当前位置$index的六亲是否已经存在
+                    /** @var Yao $yao */
+                    $yao = $this->times[$index];
+                    $yao->peace = $r;
+                }
+            }
         }
     }
 }

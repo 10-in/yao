@@ -6,7 +6,8 @@ use Shiren\Yao\Yao;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$map = [1, 2, 0, 0, 0, 3];
+//$map = [1, 2, 0, 0, 0, 3];
+$map = [1, 0, 0, 0, 0, 1];
 
 $yao = [];
 for ($i =0; $i<6; $i++) {

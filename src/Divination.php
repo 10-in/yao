@@ -51,7 +51,7 @@ class Divination
         $g = $gi * 9;
         foreach ([1,2,4,8,16,8] as $p) {
             if ($xi-- < 1) return $g;
-            $g = ($g & (~$p)) | ($g ^ $p);
+            $g = ($g & (~$p)) | ($g ^ $p); // 取反二进制$g某个位置$p的值
         }
         return $xi == 0 ? $g : ($g & 0b111000) + $gi;
     }
