@@ -1,6 +1,19 @@
 # 实仁-六爻
 
+## 安装
+
+  ```shell
+  composer require shiren/yao
+  ```
+
 ## 使用
+
+- 爻值对应
+  - No　 名称　　符号
+  - 0　　阴爻　　[ - - ] 
+  - 1　　阳爻　　[ --- ] 
+  - 2　　动阴爻　[ -x- ] 
+  - 3　　动阳爻　[ -0- ]
 
 - 命令行查看结果
   ```php
@@ -25,3 +38,11 @@
   $eye = \Shiren\Yao\Eye::create([1, 2, 0, 0, 0, 3], [6, 10], [2, 2])->look();
   $data = \Shiren\Yao\Visible::instance($eye)->show(true);
   ```
+
+## 参考demo
+
+[demo](demo/foo.php)
+
+## LICENSE
+
+  MIT
