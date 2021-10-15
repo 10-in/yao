@@ -18,8 +18,8 @@
             "email": "soonio@qq.com"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
-        "shiren/tam": "dev-master"
+        "shiren/tam": "^v1.0"
     }
 }
