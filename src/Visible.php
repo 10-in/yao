@@ -23,7 +23,7 @@ class Visible
 
     public function show(bool $isCli=false): array
     {
-        return $isCli ? $this->stringify() : $this->showInCli();
+        return $isCli ? $this->showInCli(): $this->stringify();
     }
 
     protected function showInCli(): array
