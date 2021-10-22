@@ -18,7 +18,7 @@
 - 命令行查看结果
   ```php
   $eye = \Shiren\Yao\Eye::create([1, 2, 0, 0, 0, 3], [6, 10], [2, 2])->look();
-  \Shiren\Yao\Visible::instance($eye)->show();
+  \Shiren\Yao\Visible::instance($eye)->show(true);
 
   //庚戌月丙寅日  
   //山雷颐之地泽临 木  
@@ -36,7 +36,7 @@
   $data = \Shiren\Yao\Eye::create([1, 2, 0, 0, 0, 3], [6, 10], [2, 2])->look()->toArray();
   // 以下无需自己转换参数
   $eye = \Shiren\Yao\Eye::create([1, 2, 0, 0, 0, 3], [6, 10], [2, 2])->look();
-  $data = \Shiren\Yao\Visible::instance($eye)->show(true);
+  $data = \Shiren\Yao\Visible::instance($eye)->show();
   ```
   - ->show(true)结果
   ```json
