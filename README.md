@@ -38,7 +38,7 @@
   $eye = \Shiren\Yao\Eye::create([1, 2, 0, 0, 0, 3], [6, 10], [2, 2])->look();
   $data = \Shiren\Yao\Visible::instance($eye)->show();
   ```
-  - ->show(true)结果
+  - ->show()结果
   ```json
   {
     "name": [ "山雷颐", "地泽临"],
