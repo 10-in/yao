@@ -167,7 +167,7 @@ class Eye
             $yao->z = $gz[$yao->no];
         }
 
-        if ($this->back != null) {
+        if ($this->back !== null) {
             // 装后卦
             $out = $this->back >> 3;
             $inside = $this->back & 0b000111;
