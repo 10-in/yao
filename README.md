@@ -1,5 +1,9 @@
 # 实仁-六爻
 
+# 当前项目废弃
+  
+  这个过程本就不应该在服务端实现，意义不大。现在已经改写为js版本，在前端实现，请参考 [seerlegend/six](https://github.com/seerlegend/six)
+
 ## 安装
 
   ```shell
